@@ -134,7 +134,7 @@ ________________________________________________________________________________
   
 <div align="center">
   
-  ![Portas](../img/portas-logicas.PNG)
+  ![Portas](../img/portas-logicas-ex1.PNG)
 
 </div>
   

@@ -134,7 +134,7 @@ ________________________________________________________________________________
   
 <div align="center">
   
-  ![Portas]([https://raw.githubusercontent.com/kauaneiras/FAC-Tiago-Alves/main/img/portas-logicas-ex1.PNG](https://github.com/Xeiras-Library/FAC-TiagoAlves/blob/main/img/portas-logicas-ex1.PNG))
+  ![Portas](img/portas-logicas.PNG)
 
 </div>
   

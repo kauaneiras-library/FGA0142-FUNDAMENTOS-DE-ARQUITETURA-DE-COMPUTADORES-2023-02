@@ -151,7 +151,7 @@ ________________________________________________________________________________
   
 <div align="center">
   
-  ![Portas](https://github.com/kauaneiras/FAC-Tiago-Alves/blob/main/img/portas-logicas-ex2.PNG)
+  ![Portas](img/portas-logicas-ex2.PNG)
 
 </div>
 

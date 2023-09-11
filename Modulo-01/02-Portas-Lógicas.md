@@ -155,3 +155,19 @@ ________________________________________________________________________________
 
 </div>
 
+## Relações com Lei de De Morgan:
+Aqui estão algumas relações para simplificar circuitos lógicos
+
+| Expressão Original         | Equivalente Usando De Morgan           |
+|----------------------------|----------------------------------------|
+| \(\overline{X + Y}\)       | \(\overline{X} \cdot \overline{Y}\)   |
+| \(\overline{X \cdot Y}\)   | \(\overline{X} + \overline{Y}\)       |
+| \(\overline{X} + \overline{Y}\) | \(\overline{X \cdot Y}\)           |
+| \(\overline{X \cdot \overline{Y}}\) | \(\overline{X} + Y\)           |
+| \(\overline{X + \overline{Y}}\) | \(\overline{X} \cdot Y\)           |
+| \(X \cdot (Y + Z)\)        | \(X \cdot Y + X \cdot Z\)             |
+| \(X + Y \cdot Z\)          | \((X + Y) \cdot (X + Z)\)             |
+| \(\overline{X} \cdot \overline{Y} \cdot \overline{Z}\) | \(\overline{X + Y + Z}\)   |
+
+Essas são apenas algumas das muitas equivalências que podem ser derivadas usando a Lei de De Morgan e outras propriedades da álgebra booleana. Elas são úteis para simplificar expressões lógicas e projetar circuitos lógicos mais eficientes.
+

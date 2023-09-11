@@ -6,7 +6,7 @@ As portas lógicas são componentes básicos de circuitos digitais que realizam 
 
 <div align="center">
   
-  ![Portas](../img/portas-logicas-ex2.PNG)
+  ![Portas](img/portas-logicas.PNG)
 
 </div>
 
@@ -151,7 +151,7 @@ ________________________________________________________________________________
   
 <div align="center">
   
-  ![Portas](img/portas-logicas-ex2.PNG)
+![Portas](../img/portas-logicas-ex2.PNG)
 
 </div>
 

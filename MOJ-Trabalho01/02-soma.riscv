@@ -1,0 +1,28 @@
+.data
+.text
+main:
+    # Lendo o primeiro valor do console e armazenando em t0:
+    li a7, 5 #chamada de systema 5 lê um valor inteiro
+    ecall
+    #Movendo o valor de a0 para outro registrador, pois a chamada 5 armazena o valor em a0 como padrão e o primeiro valor será perdido na proxima vez que for lido valor do console.
+    mv t0, a0  # Move o valor lido de a0 para t0
+
+    # Lendo o segundo valor do console e armazenando em t1:
+    li a7, 5 # Chamada de systema 5 lê um valor inteiro
+    ecall
+    mv t1, a0  # Move o valor lido de a0 para t1
+
+    # Fazendo a soma dos valores e armazenando em a0:
+    add a0, t0, t1 # a0 = t0+t1
+
+    # Exibindo a soma:
+    li a7, 1 # Chamada de systema 1 imprime um valor inteiro
+    ecall
+    
+    li a0, 10      # Coloca o código ASCII de quebra de linha ('\n') em a0
+    li a7, 11      # Código 11 é para imprimir um caractere (quebra de linha)
+    ecall
+
+    # Finalizando o programa:
+    li a7, 10
+    ecall

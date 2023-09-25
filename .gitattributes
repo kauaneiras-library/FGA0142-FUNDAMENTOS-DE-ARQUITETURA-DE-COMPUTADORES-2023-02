@@ -1,0 +1,2 @@
+*.riscv linguist-language=Assembly
+*.s linguist-language=Assembly

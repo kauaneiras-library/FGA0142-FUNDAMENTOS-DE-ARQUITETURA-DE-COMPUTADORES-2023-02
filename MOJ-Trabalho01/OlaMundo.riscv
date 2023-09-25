@@ -1,0 +1,17 @@
+.data
+str: .string "Ola Mundo"
+
+.text
+.globl main
+
+main:
+    # Carregando a string armazenada em 'str' para o registrador a0, que é um registrador de proposito geral
+    la a0, str
+
+    # Chamando o servićo de impressão de string que é o servićo 4. Para isso é necessário usar o registrador a7, usado para armazenar códigos de chamadas de sistema
+    li a7, 4  # Código e é o do serviço de impressão de string
+    ecall
+
+    # Finalizando o programa
+    li a7, 10  # Código 10 é o do serviço de saída
+    ecall

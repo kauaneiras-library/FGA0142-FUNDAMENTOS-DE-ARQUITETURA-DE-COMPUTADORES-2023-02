@@ -1,5 +1,3 @@
-# language: assembly
-
 .data
 str: .string "Ola Mundo"
 

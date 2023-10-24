@@ -1,0 +1,42 @@
+.data
+LineBreak: .string "\n"
+.text
+.globl main 
+# a2 = quantidade de entradas
+# a3 =  número maior
+
+main: 
+#recebe quantidade de numeros
+li a7, 5 #código de ecall "5" lê um inteiro
+ecall
+addi a2, a0, 0 #move o valor recebido em a0 para a2
+li a3, -2147483647 #menor valor que a3 pode receber
+
+Loop:
+beqz a2, Result #  (a2 == 0) ? Result 
+# caso a2 ainda não seja 0, continua executando:
+li a7, 5 #código de ecall "5" lê um inteiro
+ecall
+#Loop enquanto a2(que é a quantidade de entradas) não for igual a zero
+addi a2, a2, -1 #decrementa 1 de a2 a cada vez que insere um numero
+#se o numero recebido em a0 for maior que o número o número atual de a3,
+# então a3 vai receber o número de a0
+bge a0, a3, SaveTheBiggest #se a0 > a3, vai para SaveTheBiggest
+j Loop
+
+SaveTheBiggest:
+addi a3, a0, 0 #salva o valor de a0 em a3
+j Loop
+
+Result: 
+addi a0, a3, 0 #coloca o valor de a3 em a0
+li a7, 1 #código de ecall "1" imprime um inteiro
+ecall
+la a0, LineBreak
+li a7, 4
+ecall
+
+EndProgram:
+addi    a0, zero, 0   # Return 0;
+addi    a7, zero, 93  # Termina o programa
+ecall

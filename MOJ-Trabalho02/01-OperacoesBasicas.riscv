@@ -1,5 +1,6 @@
 #ENUNCIADO: https://moj.naquadah.com.br/contests/ta_fac_t2_2023_2/operacoesbasicas2.html
 #a2 = a; a3 = b; a4 = c;
+
 .data
 input1: .asciz "Digite o valor de A: "
 input2: .asciz "Digite o valor de B: "

@@ -1,0 +1,84 @@
+.data
+	quebralinha:	.string "\n"     # Define uma string que representa uma quebra de linha
+	menos: 		.string "-"       # Define uma string que representa o sinal negativo
+	mais:		.string "+"       # Define uma string que representa o sinal positivo
+
+.text
+.globl main
+
+main:
+	# Leitura de um número racional (float)
+	li a7, 6     # Carrega o código de chamada do sistema para ler um número float (6)
+	ecall       # Faz a chamada do sistema para ler o número
+
+	# Imprime o número lido
+	li a7, 2     # Carrega o código de chamada do sistema para imprimir um float (2)
+	ecall       # Faz a chamada do sistema para imprimir o número
+
+	# Converte o valor lido para poder utilizá-lo em registradores
+	fmv.s fs0, fa0 # Move o valor lido para o registrador de ponto flutuante fs0
+
+	# Imprimir quebra de linha
+	la a0, quebralinha # Carrega a mensagem "\n" em a0
+	li a1, 1           # Define o tamanho da mensagem
+	li a7, 4           # Código de chamada do sistema para imprimir uma string
+	ecall             # Faz a chamada do sistema para imprimir a quebra de linha
+
+	# Converte o valor lido para poder utilizá-lo em registradores
+	fmv.x.s a0, fs0  # Move o valor do registrador de ponto flutuante fs0 para um registrador de inteiro a0
+	srli a0, a0, 31  # Realiza uma operação de shift right lógico para obter o sinal do número
+	bnez a0, imprimirMenos # Se o sinal for zero (positivo), vá para a etiqueta positivo
+
+imprimirMais:
+	# Imprime o sinal +
+	la a0, mais  # Carrega a mensagem "+" em a0
+	li a1, 1     # Define o tamanho da mensagem
+	li a7, 4     # Código de chamada do sistema para imprimir uma string
+	ecall       # Faz a chamada do sistema para imprimir o sinal positivo
+	j pula
+
+imprimirMenos:
+	# Imprime o sinal negativo
+	la a0, menos  # Carrega a mensagem "-" em a0
+	li a1, 1      # Define o tamanho da mensagem
+	li a7, 4      # Código de chamada do sistema para imprimir uma string
+	ecall        # Faz a chamada do sistema para imprimir o sinal negativo
+
+pula:
+# Imprimir quebra de linha
+	la a0, quebralinha # Carrega a mensagem "\n" em a0
+	li a1, 1           # Define o tamanho da mensagem
+	li a7, 4           # Código de chamada do sistema para imprimir uma string
+	ecall             # Faz a chamada do sistema para imprimir a quebra de linha
+
+# Imprimir expoente
+	fmv.x.s a0, fs0
+	slli a0, a0, 1
+	srli a0, a0, 24
+	addi a0, a0, -127
+	li a7, 1
+	ecall
+    
+# Imprimir quebra de linha
+	la a0, quebralinha # Carrega a mensagem "\n" em a0
+	li a1, 1           # Define o tamanho da mensagem
+	li a7, 4           # Código de chamada do sistema para imprimir uma string
+	ecall             # Faz a chamada do sistema para imprimir a quebra de linha
+
+# Imprimir mantissa
+    	fmv.x.s a0, fs0    # Move o valor do registrador de ponto flutuante fs0 para um registrador de inteiro a0
+    	slli a0, a0, 9     # Realiza uma operação de shift left lógico para obter a mantissa
+    	srli a0, a0, 9    # Realiza uma operação de shift right lógico para obter a mantissa
+    	li a7, 34         # Carrega o código de chamada do sistema para imprimir um inteiro em hexadecimal (34)
+    	ecall
+
+# Imprimir quebra de linha
+	la a0, quebralinha # Carrega a mensagem "\n" em a0
+	li a1, 1           # Define o tamanho da mensagem
+	li a7, 4           # Código de chamada do sistema para imprimir uma string
+	ecall             # Faz a chamada do sistema para imprimir a quebra de linha
+
+# Retorna 0
+	addi a0, zero, 0   # Define o valor de retorno como 0
+	addi a7, zero, 10  # Termina o programa (código de chamada do sistema para encerrar)
+	ecall            # Faz a chamada do sistema para encerrar o programa

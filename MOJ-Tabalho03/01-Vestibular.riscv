@@ -1,0 +1,75 @@
+.data
+  numQuestoes: .word 0
+  gabarito: .space 101  # Espaço para armazenar o gabarito (até 101 caracteres)
+  respostas: .space 101  # Espaço para armazenar as respostas (até 101 caracteres)
+  acertos: .word 0
+  LineBreak: .string "\n"
+
+.text
+  .globl main
+
+main:
+  # Lê o número de questões
+  li a7, 5  # Chamada de sistema para ReadInt
+  ecall
+  la t0, numQuestoes  # Carrega o endereço de numQuestoes no registrador t0
+  sw a0, 0(t0)  # Armazena o valor de a0 no endereço contido em t0
+
+  # Lê o gabarito
+  la a0, gabarito
+  li a1, 101  # Número máximo de caracteres no gabarito
+  li a7, 8   # Chamada de sistema para ReadString
+  ecall
+
+  # Lê as respostas do candidato
+  la a0, respostas
+  li a1, 101  # Número máximo de caracteres nas respostas
+  li a7, 8   # Chamada de sistema para ReadString
+  ecall
+
+  # Inicializa o contador de acertos
+  li t0, 0
+
+  # Ponteiros para percorrer as strings
+  la t1, gabarito
+  la t2, respostas
+
+  # Contador de questões
+  li t5, 0
+
+  # Percorre as strings e compara as respostas
+  loop:
+    lbu t3, 0(t1)
+    lbu t4, 0(t2)
+
+    # Compara os caracteres
+    beq t3, t4, acerto
+    j next
+
+  acerto:
+    addi t0, t0, 1
+
+  next:
+    addi t1, t1, 1
+    addi t2, t2, 1
+    addi t5, t5, 1  # Incrementa o contador de questões
+    la t6, numQuestoes  # Carrega o endereço de numQuestoes no registrador t6
+    lw t6, 0(t6)  # Carrega o valor no endereço contido em t6
+    blt t5, t6, loop  # Se o contador de questões é menor que o número de questões, continua o loop
+
+  done:
+   # Armazena o resultado (quantidade de acertos) em a0
+    mv a0, t0
+
+    # Imprime a quantidade de acertos
+    li a7, 1   # Chamada de sistema para PrintInt
+    ecall
+    
+    #Quebra Linha
+    la a0, LineBreak
+    li a7, 4
+    ecall
+
+    # Termina o programa
+    li a7, 10  # Chamada de sistema para Exit
+    ecall

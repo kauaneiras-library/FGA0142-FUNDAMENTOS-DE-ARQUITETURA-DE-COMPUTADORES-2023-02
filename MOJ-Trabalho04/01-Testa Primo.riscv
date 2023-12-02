@@ -1,0 +1,58 @@
+.data
+msgPrimo: .string "sim"
+msgComposto: .string "nao"
+msgInvalido: .string "Entrada invalida."
+novaLinha: .string "\n"
+
+.text
+inicio:
+    li a7, 5
+    ecall
+    mv t1, a0
+    
+    li s0, 0
+    li s1, 1
+    
+    beq s1, t1, ehComposto
+    ble t1, zero, invalido
+    li s2, 2
+    j primo
+    
+primo:
+    mul t2, s2, s2
+    ble t2, t1, composto
+    j printPrimo
+    
+composto:
+    rem t3, t1, s2
+    beqz t3, ehComposto
+    addi s2, s2, 1
+    j primo
+    
+printPrimo:
+    la a0, msgPrimo
+    li a7, 4
+    ecall
+    la a0, novaLinha
+    ecall
+    j final
+    
+ehComposto:
+    la a0, msgComposto
+    li a7, 4
+    ecall
+    la a0, novaLinha
+    ecall
+    j final
+    
+invalido:
+    la a0, msgInvalido
+    li a7, 4
+    ecall
+    la a0, novaLinha
+    ecall
+    j final
+    
+final:
+    li a7, 10
+    ecall

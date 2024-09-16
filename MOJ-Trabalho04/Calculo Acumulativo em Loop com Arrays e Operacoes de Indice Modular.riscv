@@ -1,0 +1,97 @@
+####################### Não altere essa seção ####################
+.data
+STR1: .string "y["
+STR2: .string "]="
+STRX: .string "X["
+STRH: .string "H["
+MUL:  .string "Multiplicando 1.5*h[k]*x[pos+k%N]\n"
+NL:   .string "\n"
+
+X: .float 1,2,3,4,3,2,1,2,3,4,5,4,3,2,1,0
+H: .float 1,4,6
+
+.text
+    li a7, 5          # Leitura de inteiro para 'pos'
+    ecall
+    mv a1, a0         # Armazena 'pos' em a1
+    la a0, X          # Carrega o endereço base de X em a0
+    la a2, H          # Carrega o endereço base de H em a2
+    li a3, 3          # N = 3
+    jal F1            # Chama a função F1
+    li a7, 10         # Finaliza o programa
+    ecall
+
+##### Escreva a sua solução a partir daqui ########
+
+F1:
+    addi sp, sp, -16           # Aloca espaço na pilha
+    sw a0, 0(sp)               # Salva o ponteiro de X
+    sw a1, 4(sp)               # Salva 'pos'
+    sw a2, 8(sp)               # Salva o ponteiro de H
+    sw a3, 12(sp)              # Salva N
+
+    li s0, 0                   # Inicializa k = 0
+    li s1, 1092616192          # y = 10.0 (valor flutuante 10.0 = 0x41200000)
+    fmv.s.x f0, s1             # Move 10.0 para o registrador f0 (acumulador de ponto flutuante)
+
+Loop:
+    # Calcula (pos + k) % N
+    lw t0, 4(sp)               # t0 = 'pos'
+    add t1, t0, s0             # t1 = pos + k
+
+    lw t2, 12(sp)              # t2 = N
+    rem t3, t1, t2             # t3 = (pos + k) % N
+    slli t4, t3, 2             # t4 = t3 * 4 (tamanho do float)
+
+    # Carrega o valor de X[(pos + k) % N]
+    lw t5, 0(sp)               # t5 = endereço base de X
+    add t6, t5, t4             # t6 = endereço de X[(pos + k) % N]
+    flw f1, 0(t6)              # Carrega o valor de X[(pos + k) % N] em f1
+
+    # Carrega o valor de H[k]
+    slli t0, s0, 2             # t0 = k * 4
+    lw t1, 8(sp)               # t1 = endereço base de H
+    add t2, t1, t0             # t2 = endereço de H[k]
+    flw f2, 0(t2)              # Carrega o valor de H[k] em f2
+
+    # Realiza a multiplicação 1.5 * h[k] * x[(pos + k) % N]
+    li t0, 1069547520          # Carrega o valor 1.5 (em ponto flutuante 1.5 = 0x3FC00000)
+    fmv.s.x f3, t0             # Move 1.5 para f3
+
+    fmul.s f4, f3, f2          # f4 = 1.5 * h[k]
+    fmul.s f5, f4, f1          # f5 = 1.5 * h[k] * x[(pos + k) % N]
+    fadd.s f0, f0, f5          # y += 1.5 * h[k] * x[(pos + k) % N]
+
+    # Incrementa k e repete o loop até k < N
+    addi s0, s0, 1             # k++
+    lw t1, 12(sp)              # Carrega N
+    blt s0, t1, Loop           # Se k < N, continua o loop
+
+    # Imprime o resultado final y[pos] = valor
+    la a0, STR1                # Carrega a string "y["
+    li a7, 4                   # PrintString
+    ecall
+
+    lw a0, 4(sp)               # Carrega 'pos'
+    li a7, 1                   # PrintInt
+    ecall
+
+    la a0, STR2                # Carrega a string "]="
+    li a7, 4                   # PrintString
+    ecall
+
+    fmv.s fa0, f0              # Move o valor de y para fa0
+    li a7, 2                   # PrintFloat
+    ecall
+
+    la a0, NL                  # Nova linha
+    li a7, 4                   # PrintString
+    ecall
+
+    lw a0, 0(sp)               # Restaura valores originais
+    lw a1, 4(sp)               # Restaura 'pos'
+    lw a2, 8(sp)               # Restaura H
+    lw a3, 12(sp)              # Restaura N
+
+    addi sp, sp, 16            # Libera a pilha
+    ret                        # Retorna
